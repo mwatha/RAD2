@@ -111,14 +111,14 @@ if($n > 0) {
     <!-- starts -->
     <p>&nbsp;</p>
     <p style="font-size:20px;width:665px;"><strong>Assign user privelege</strong></p>
-    <form method="post" action="runreport.php">
+    <form method="post" action="assign_role.php">
     <table style="width:345px;">
       <tr>
         <td>User</td>
         <td>
-          <select id="user_name" name="username">
+          <select id="user_id" name="user_id">
            <?php                                                               
-              $query = "SELECT username FROM users;";            
+              $query = "SELECT user_id,username FROM users;";            
               $results = mysql_query($query,$db);                           
               $n = mysql_num_rows($results);                                    
                                                                                 
@@ -127,7 +127,7 @@ if($n > 0) {
               <?php for($i = 0; $i < $n; $i++) {                                
                 $r = mysql_fetch_row($results);                                 
              ?>                                                                 
-                <option value="<?php echo $r[0]; ?>"><?php echo encrypt($r[0]); ?></option>
+                <option value="<?php echo $r[0]; ?>"><?php echo encrypt($r[1]); ?></option>
               <?php                                                             
                 }                                                               
               }                                                                 
