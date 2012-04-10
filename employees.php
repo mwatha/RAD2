@@ -1,33 +1,20 @@
 <?php session_start();                                                          
 require 'encryption.php'; ?>                                                    
 <script>                                                                        
-  function redirectLocation() {                                                    
-    document.location = "location";                                            
-  }                                                                             
-                                                                                
   function redirectLogin() {                                                    
-    document.location = "login";                                            
+    document.location = "login.php";                                            
   }                                                                             
                                                                                 
   function redirectHome() {                                                     
-    document.location = "index";                                            
+    document.location = "index.php";                                            
   }                                                                             
 </script>                                                                       
 <?php                                                                           
-
-$location = $_GET["location"];
-if(strlen($location) < 1) { 
-  $location = $_SESSION['location'];
-}
-
+                                                                                
 if($_SESSION['user_id'] == null) { ?>                                           
   <script>redirectLogin();</script><?php                                        
-}else{        
-  if(strlen($location) < 1) { ?>
-  <script>redirectLocation();</script><?php                                        
-  }                                                                 
+}else{                                                                          
   $user_id = $_SESSION['user_id'];                                              
-  $_SESSION['location'] = $location;
 }                                                                               
                                                                                 
 $db = mysql_pconnect("localhost","root","letusout");                            
@@ -69,7 +56,7 @@ if(strlen($_SESSION['username']) > 0) {
 	<li><a href="employees.php" class="na">Employees</a></li>
 	<li><a href="reports.php" class="na">Reports</a></li>
 	<li><a href="#" class="na">Administration</a></li>
-	<li><a href="signout.php" class="na">Signout</a></li>
+  <li><a href="signout.php" class="na">Signout</a></li>
 </ul>
 </div><!--header end -->
 <div id="who"><!--who we are start -->
@@ -82,7 +69,44 @@ London offices.</p><p /><p /><p /><p />
 <div id="middle100"><!--middle start -->
 <div id="middle"><!--middle -->
   <div id="left" style="width:667px;">
-    <p>&nbsp;</p>
+    <p style="font-size:20px;"><strong>Employees</strong></p>
+    <!-- starts -->
+       <table width="99%" style="border-style:solid;border-width:1px;font-size:12px;">
+              <tr style="background-color:lightgrey;color:white;">                
+                <th style="text-align:left;padding-left:5px;" class="cd-details">Username</th>                       
+                <th style="text-align:left;padding-left:5px;" class="cd-details">First name</th>                       
+                <th style="text-align:left;padding-left:5px;" class="cd-details">Last name</th>                       
+                <th style="text-align:left;padding-left:5px;" class="cd-details">Gender</th>                       
+                <th style="text-align:left;padding-left:5px;" class="cd-details">Birthdate</th>                       
+                <th style="text-align:left;padding-left:5px;" class="cd-details">E-mail</th>                       
+                <th class="cd-details">&nbsp;</th>                              
+              </tr>                                                             
+              <?php                                                             
+                $query = "SELECT * FROM users";                              
+                $results = mysql_query($query,$db);                             
+                //$r = mysql_fetch_row($results);                                                 
+                $n = mysql_num_rows($results);                                  
+                if ($n > 0) {                                                   
+                  for($i=0;$i < $n ; $i++) {                                    
+                   $record = mysql_fetch_row($results);                         
+              ?>                                                                
+              <tr style="text-align:right;padding-right:5px;">                                                              
+                <td style="text-align:left;padding-left:5px;"><?php echo encrypt($record[1]); ?></td>                     
+                <td style="text-align:left;padding-left:5px;"><?php echo encrypt($record[2]); ?></td>                     
+                <td style="text-align:left;padding-left:5px;"><?php echo encrypt($record[3]); ?></td>                     
+                <td style="text-align:left;padding-left:5px;"><?php echo $record[4]; ?></td>                     
+                <td style="text-align:left;padding-left:5px;"><?php echo $record[5]; ?></td>                     
+                <td style="text-align:left;padding-left:5px;"><?php echo encrypt($record[6]); ?></td>                     
+                <td style="text-align:center;"><a href="#">Remove</a></td>
+              </tr>                                                             
+              <?php                                                             
+               }                                                                
+              }?>                                                               
+              <tr style="background-color:lightgrey;">                            
+                <td colspan="8">&nbsp;</td>                                     
+              </tr>                                                             
+            </table> 
+    <!-- ends -->
     <p>&nbsp;</p>
     <p>&nbsp;</p>
     <p style="font-size:20px;width:665px;">Welcome&nbsp;<strong><?php echo encrypt($r[2]).' '.encrypt($r[3]); ?></strong></p>

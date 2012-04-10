@@ -66,9 +66,9 @@ if(strlen($_SESSION['username']) > 0) {
 	<li><a href="index.php" class="na">Home</a></li>
 	<li><a href="customers.php" class="na">Customers</a></li>
 	<li><a href="orders.php" class="na">Orders</a></li>
-	<li><a href="#" class="na">Products</a></li>
-	<li><a href="#" class="na">Employees</a></li>
-	<li><a href="#" class="na">Reports</a></li>
+	<li><a href="products.php" class="na">Products</a></li>
+	<li><a href="employees.php" class="na">Employees</a></li>
+	<li><a href="reports.php" class="na">Reports</a></li>
 	<li><a href="#" class="na">Administration</a></li>
 	<li><a href="signout.php" class="na">Signout</a></li>
 </ul>
@@ -142,6 +142,33 @@ if($n > 0) {
               INNER JOIN item i ON i.item_id = o.item_id
               INNER JOIN users u ON u.user_id = e.user_id
               WHERE e.location = '$location' AND u.username = '$username'";
+      }elseif($location) {
+        $query ="SELECT  c.customer_name,i.name,o.quantity,o.price,location,
+              fname,lname, e.date_created FROM encounter e 
+              INNER JOIN orders o ON o.encounter_id = e.encounter_id
+              AND e.date_created >= '$start_date' AND e.date_created <= '$end_date'
+              INNER JOIN customer c ON c.customer_id = e.customer_id
+              INNER JOIN item i ON i.item_id = o.item_id
+              INNER JOIN users u ON u.user_id = e.user_id
+              WHERE e.location = '$location'";
+      }elseif($username) {
+        $query ="SELECT  c.customer_name,i.name,o.quantity,o.price,location,
+              fname,lname, e.date_created FROM encounter e 
+              INNER JOIN orders o ON o.encounter_id = e.encounter_id
+              AND e.date_created >= '$start_date' AND e.date_created <= '$end_date'
+              INNER JOIN customer c ON c.customer_id = e.customer_id
+              INNER JOIN item i ON i.item_id = o.item_id
+              INNER JOIN users u ON u.user_id = e.user_id
+              WHERE u.username = '$username'";
+      }elseif($customer) {
+        $query ="SELECT  c.customer_name,i.name,o.quantity,o.price,location,
+              fname,lname, e.date_created FROM encounter e 
+              INNER JOIN orders o ON o.encounter_id = e.encounter_id
+              AND e.date_created >= '$start_date' AND e.date_created <= '$end_date'
+              INNER JOIN customer c ON c.customer_id = e.customer_id
+              INNER JOIN item i ON i.item_id = o.item_id
+              INNER JOIN users u ON u.user_id = e.user_id
+              WHERE c.customer_name = '$customer'";
       }else{
         $query ="SELECT  c.customer_name,i.name,o.quantity,o.price,location,
               fname,lname, e.date_created FROM encounter e 
@@ -175,7 +202,7 @@ if($n > 0) {
           <td style="text-align:right;padding-right:5px;"><?php echo $r[2]; ?></td> 
           <td style="text-align:right;padding-right:5px;"><?php echo $r[3]; ?></td> 
           <td><?php echo encrypt($r[5]).' '.encrypt($r[6]); ?></td> 
-          <td><?php echo $r[4]; ?></td> 
+          <td><?php echo encrypt($r[4]); ?></td> 
           <td><?php echo $r[7]; ?></td> 
         </tr>                                                                 
    <?php }

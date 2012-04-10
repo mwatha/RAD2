@@ -52,9 +52,9 @@ if(strlen($_SESSION['username']) > 0) {
 	<li><a href="index.php" class="na">Home</a></li>
 	<li><a href="customers.php" class="na">Customers</a></li>
 	<li><a href="orders.php" class="na">Orders</a></li>
-	<li><a href="#" class="na">Products</a></li>
-	<li><a href="#" class="na">Employees</a></li>
-	<li><a href="#" class="na">Reports</a></li>
+	<li><a href="products.php" class="na">Products</a></li>
+	<li><a href="employees.php" class="na">Employees</a></li>
+	<li><a href="reports.php" class="na">Reports</a></li>
 	<li><a href="#" class="na">Administration</a></li>
   <li><a href="signout.php" class="na">Signout</a></li>
 </ul>
@@ -93,7 +93,7 @@ London offices.</p><p /><p /><p /><p />
                 <td><?php echo encrypt($record[2]); ?></td>                     
                 <td><?php echo encrypt($record[3]); ?></td>                     
                 <td><?php echo encrypt($record[4]); ?></td>                     
-                <td style="text-align:center;"><a href="/customer_details/<?php echo $record[0]; ?>">Edit</a></td>
+                <td style="text-align:center;"><a href="#">Edit</a></td>
               </tr>                                                             
               <?php                                                             
                }                                                                

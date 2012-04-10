@@ -52,8 +52,8 @@ if(strlen($_SESSION['username']) > 0) {
 	<li><a href="index.php" class="na">Home</a></li>
 	<li><a href="customers.php" class="na">Customers</a></li>
 	<li><a href="orders.php" class="na">Orders</a></li>
-	<li><a href="#" class="na">Products</a></li>
-	<li><a href="#" class="na">Employees</a></li>
+	<li><a href="products.php" class="na">Products</a></li>
+	<li><a href="employees.php" class="na">Employees</a></li>
 	<li><a href="reports.php" class="na">Reports</a></li>
 	<li><a href="#" class="na">Administration</a></li>
 	<li><a href="signout.php" class="na">Signout</a></li>
