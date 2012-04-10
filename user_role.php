@@ -27,7 +27,7 @@ if(strlen($_SESSION['username']) > 0) {
   $query = "SELECT * FROM users WHERE username = '$username'                    
             AND user_id = $user_id ORDER BY user_id DESC LIMIT 1";              
   $results = mysql_query($query,$db);                                           
-  $r = mysql_fetch_row($results);                                               
+  $rc = mysql_fetch_row($results);                                               
 }                                                                               
                                                                                 
 ?> 
@@ -56,7 +56,7 @@ if(strlen($_SESSION['username']) > 0) {
 	<li><a href="employees.php" class="na">Employees</a></li>
 	<li><a href="reports.php" class="na">Reports</a></li>
 	<li><a href="user_role.php" class="na">Administration</a></li>
-  <li><a href="signout.php" class="na">Signout</a></li>
+	<li><a href="signout.php" class="na">Signout</a></li>
 </ul>
 </div><!--header end -->
 <div id="who"><!--who we are start -->
@@ -64,52 +64,73 @@ if(strlen($_SESSION['username']) > 0) {
 <p><strong>Supply Concepts</strong> is a company which supplies office equipment and office stationary to a number of Central
 London offices.</p><p /><p /><p /><p />
 
+<?php                                 
+$encounter_id =  $_GET['encounter_id'];            
+$options = "SELECT e.encounter_id,customer_name  FROM encounter e 
+            INNER JOIN customer c ON c.customer_id = e.customer_id 
+            AND e.encounter_id = $encounter_id LIMIT 1";
+
+$results = mysql_query($options,$db);                             
+$n = mysql_num_rows($results);                                   
+                                                                  
+if($n > 0) {                                                     
+ $rc = mysql_fetch_row($results);                               
+}
+?>
 </div><!--who we are send -->
 </div><!--upper table end -->
 <div id="middle100"><!--middle start -->
 <div id="middle"><!--middle -->
-  <div id="left" style="width:667px;">
-    <p style="font-size:20px;"><strong>Employees</strong></p>
+  <div id="left" style="width:745px;">
     <!-- starts -->
-       <table width="99%" style="border-style:solid;border-width:1px;font-size:12px;">
-              <tr style="background-color:lightgrey;color:white;">                
-                <th style="text-align:left;padding-left:5px;" class="cd-details">Username</th>                       
-                <th style="text-align:left;padding-left:5px;" class="cd-details">First name</th>                       
-                <th style="text-align:left;padding-left:5px;" class="cd-details">Last name</th>                       
-                <th style="text-align:left;padding-left:5px;" class="cd-details">Gender</th>                       
-                <th style="text-align:left;padding-left:5px;" class="cd-details">Birthdate</th>                       
-                <th style="text-align:left;padding-left:5px;" class="cd-details">E-mail</th>                       
-                <th class="cd-details">&nbsp;</th>                              
-              </tr>                                                             
-              <?php                                                             
-                $query = "SELECT * FROM users";                              
-                $results = mysql_query($query,$db);                             
-                //$r = mysql_fetch_row($results);                                                 
-                $n = mysql_num_rows($results);                                  
-                if ($n > 0) {                                                   
-                  for($i=0;$i < $n ; $i++) {                                    
-                   $record = mysql_fetch_row($results);                         
-              ?>                                                                
-              <tr style="text-align:right;padding-right:5px;">                                                              
-                <td style="text-align:left;padding-left:5px;"><?php echo encrypt($record[1]); ?></td>                     
-                <td style="text-align:left;padding-left:5px;"><?php echo encrypt($record[2]); ?></td>                     
-                <td style="text-align:left;padding-left:5px;"><?php echo encrypt($record[3]); ?></td>                     
-                <td style="text-align:left;padding-left:5px;"><?php echo $record[4]; ?></td>                     
-                <td style="text-align:left;padding-left:5px;"><?php echo $record[5]; ?></td>                     
-                <td style="text-align:left;padding-left:5px;"><?php echo encrypt($record[6]); ?></td>                     
-                <td style="text-align:center;"><a href="#">Remove</a></td>
-              </tr>                                                             
-              <?php                                                             
-               }                                                                
-              }?>                                                               
-              <tr style="background-color:lightgrey;">                            
-                <td colspan="8">&nbsp;</td>                                     
-              </tr>                                                             
-            </table> 
-    <!-- ends -->
     <p>&nbsp;</p>
+    <p style="font-size:20px;width:665px;"><strong>Assign user privelege</strong></p>
+    <form method="post" action="runreport.php">
+    <table style="width:345px;">
+      <tr>
+        <td>User</td>
+        <td>
+          <select id="user_name" name="username">
+           <?php                                                               
+              $query = "SELECT username FROM users;";            
+              $results = mysql_query($query,$db);                           
+              $n = mysql_num_rows($results);                                    
+                                                                                
+              if($n > 0) { ?>                                                   
+                <option value=""></option>                                      
+              <?php for($i = 0; $i < $n; $i++) {                                
+                $r = mysql_fetch_row($results);                                 
+             ?>                                                                 
+                <option value="<?php echo $r[0]; ?>"><?php echo encrypt($r[0]); ?></option>
+              <?php                                                             
+                }                                                               
+              }                                                                 
+             ?>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>User privelege</td>
+        <td>
+          <select name="userrole">                                    
+            <option value=""></option>                                        
+            <option value="sales">Guest</option>                              
+            <option value="staff">Staff</option>                              
+            <option value="admin">Administrator</option>                      
+          </select> 
+        </td>
+      </tr>
+      <tr>                                                                  
+        <td>&nbsp;</td>                                                     
+        <td style="text-align:left;">                                       
+          <input type="button" onclick="javascript:document:location='index';" value="Cancel" />
+          <input type="submit" value="Assign" />                              
+        </td>                                                               
+      </tr>
+    </table></form>
+    <!-- endss -->
     <p>&nbsp;</p>
-    <p style="font-size:20px;width:665px;">Welcome&nbsp;<strong><?php echo encrypt($r[2]).' '.encrypt($r[3]); ?></strong></p>
+    <p style="font-size:20px;width:665px;">Welcome&nbsp;<strong><?php echo encrypt($rc[2]).' '.encrypt($rc[3]); ?></strong></p>
   </div>
 </div>
 </div>
