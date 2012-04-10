@@ -1,3 +1,50 @@
+<?php session_start();                                                          
+require 'encryption.php'; ?>                                                    
+<script>                                                                        
+  function redirectLogin() {                                                    
+    document.location = "login.php";                                            
+  }                                                                             
+                                                                                
+  function redirectHome() {                                                     
+    document.location = "index.php";                                            
+  }                                                                             
+</script>                                                                       
+<?php                                                                           
+                                                                                
+if($_SESSION['user_id'] == null) { ?>                                           
+  <script>redirectLogin();</script><?php                                        
+}else{                                                                          
+  $user_id = $_SESSION['user_id'];                                              
+} 
+
+$db = mysql_pconnect("localhost","root","letusout");                            
+mysql_select_db("supply_concepts", $db);                                        
+                                                                                
+                                                                                
+$user_role = "SELECT role FROM user_role WHERE user_id = $user_id LIMIT 1";     
+$results = mysql_query($user_role,$db);                                         
+$r = mysql_fetch_row($results);                                                 
+$n = mysql_num_rows($results);                                                  
+                                                                                
+if ($n > 0) {                                                                   
+  if ($r[0] !="admin") { ?>                                                     
+    <script>                                                                    
+      document.write('You dont have permission to view this page.');            
+      setTimeout("redirectHome();", 4000);                                      
+    </script><?php                                                              
+    exit;                                                                       
+  }                                                                             
+}else{ ?>                                                                       
+    <script>                                                                    
+      document.write('You dont have permission to view this page.');            
+      setTimeout("redirectHome();", 4000);                                      
+    </script><?php                                                              
+    exit;                                                                       
+} 
+
+
+?>
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
