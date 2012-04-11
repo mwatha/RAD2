@@ -107,11 +107,13 @@ if($n > 0) {
       if($nl > 0) {                                                     
         for ($i = 1;$i <= $nl;$i++) {                                   
          $rc = mysql_fetch_row($results);                               
-      ?>                                                                
-       <td style="text-align:left;padding-left:5px;"><?php echo encrypt($rc[0]); ?></td>
-       <td style="text-align:right;padding-right:5px;"><?php echo $rc[2]; ?></td>
-       <td style="text-align:right;padding-right:5px;"><?php echo $rc[1]; ?></td>
-       <td style="text-align:right;padding-right:5px;"><?php echo ($rc[2] * $rc[1]); ?></td>
+      ?>       
+       <tr>                                                          
+         <td style="text-align:left;padding-left:5px;"><?php echo encrypt($rc[0]); ?></td>
+         <td style="text-align:right;padding-right:5px;"><?php echo $rc[2]; ?></td>
+         <td style="text-align:right;padding-right:5px;"><?php echo $rc[1]; ?></td>
+         <td style="text-align:right;padding-right:5px;"><?php echo ($rc[2] * $rc[1]); ?></td>
+       </tr>                                                          
       <?php                                                             
        }                                                                
      } ?>
